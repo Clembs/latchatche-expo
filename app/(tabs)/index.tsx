@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Button, { ButtonSize } from "@/components/Button";
 import { ThemedText } from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import { Link } from "phosphor-react-native";
@@ -8,8 +8,11 @@ export default function Home() {
     <ThemedView>
       <ThemedText>Hello world</ThemedText>
 
-      <Button icon={Link} onPress={() => alert("L'alerte est montrée.")}>
-        Montrer une alerte
+      <Button size={ButtonSize.Small} icon={Link} href="salons-publics">
+        Bouton petit
+      </Button>
+      <Button size={ButtonSize.Medium} icon={Link} onPress={() => alert("h")}>
+        Bouton moyen
       </Button>
     </ThemedView>
   );

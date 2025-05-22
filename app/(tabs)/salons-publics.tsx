@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { ThemedText, ThemedTextVariants } from "@/components/ThemedText";
+import { ThemedText, ThemedTextVariant } from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -9,7 +9,7 @@ export default function OtherThing() {
 
   return (
     <ThemedView>
-      <ThemedText variant={ThemedTextVariants.HeadingLarge}>
+      <ThemedText variant={ThemedTextVariant.HeadingLarge}>
         Compteur à {count}
       </ThemedText>
 

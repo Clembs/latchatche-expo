@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/Colors";
 import { Text, TextProps, TextStyle, useColorScheme } from "react-native";
 
-export enum ThemedTextVariants {
+export enum ThemedTextVariant {
   HeadingLarge,
   HeadingMedium,
   HeadingSmall,
@@ -10,44 +10,46 @@ export enum ThemedTextVariants {
 }
 
 export type ThemedTextProps = TextProps & {
-  variant?: ThemedTextVariants;
+  variant?: ThemedTextVariant;
 };
 
 export function ThemedText({
-  variant = ThemedTextVariants.Paragraph,
+  variant = ThemedTextVariant.Paragraph,
   style,
   ...restProps
 }: ThemedTextProps) {
   const colorScheme = useColorScheme() ?? "light";
 
-  return <Text style={[styles[variant](colorScheme), style]} {...restProps} />;
+  return (
+    <Text style={[variantStyles[variant](colorScheme), style]} {...restProps} />
+  );
 }
 
-const styles: Record<
-  ThemedTextVariants,
+const variantStyles: Record<
+  ThemedTextVariant,
   (theme: "light" | "dark") => TextStyle
 > = {
-  [ThemedTextVariants.HeadingLarge]: (theme) => ({
+  [ThemedTextVariant.HeadingLarge]: (theme) => ({
     color: Colors[theme].onSurface,
     fontSize: 32,
     fontWeight: 500,
   }),
-  [ThemedTextVariants.HeadingMedium]: (theme) => ({
+  [ThemedTextVariant.HeadingMedium]: (theme) => ({
     color: Colors[theme].onSurface,
     fontSize: 24,
     fontWeight: 500,
   }),
-  [ThemedTextVariants.HeadingSmall]: (theme) => ({
+  [ThemedTextVariant.HeadingSmall]: (theme) => ({
     color: Colors[theme].onSurface,
     fontSize: 20,
     fontWeight: 500,
   }),
-  [ThemedTextVariants.Clickable]: (theme) => ({
+  [ThemedTextVariant.Clickable]: (theme) => ({
     color: Colors[theme].onSurface,
     fontSize: 16,
     fontWeight: 500,
   }),
-  [ThemedTextVariants.Paragraph]: (theme) => ({
+  [ThemedTextVariant.Paragraph]: (theme) => ({
     color: Colors[theme].onSurfaceVariant,
     fontSize: 16,
     fontWeight: 400,
