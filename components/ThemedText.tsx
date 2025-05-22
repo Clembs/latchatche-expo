@@ -7,6 +7,7 @@ export enum ThemedTextVariant {
   HeadingSmall,
   Clickable,
   Paragraph,
+  Footnote,
 }
 
 export type ThemedTextProps = TextProps & {
@@ -50,8 +51,13 @@ const variantStyles: Record<
     fontWeight: 500,
   }),
   [ThemedTextVariant.Paragraph]: (theme) => ({
-    color: Colors[theme].onSurfaceVariant,
+    color: Colors[theme].onSurfaceLight,
     fontSize: 16,
+    fontWeight: 400,
+  }),
+  [ThemedTextVariant.Footnote]: (theme) => ({
+    color: Colors[theme].onSurfaceLight,
+    fontSize: 12,
     fontWeight: 400,
   }),
 };
