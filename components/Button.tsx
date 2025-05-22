@@ -20,7 +20,6 @@ export type ButtonProps = (LinkProps | TextProps) & {
   size?: ButtonSize;
   href?: string;
   icon?: ComponentType<IconProps>;
-  iconProps?: IconProps;
 };
 
 export default function Button({
@@ -29,12 +28,12 @@ export default function Button({
   size = ButtonSize.Medium,
   href,
   icon: Icon,
-  iconProps,
   ...restProps
 }: ButtonProps) {
   const buttonStyles = [
     styles.buttonWrapper,
     sizeStyles[size].buttonWrapper,
+    !children ? sizeStyles[size].iconButtonWrapper : undefined,
     style,
   ];
 
@@ -44,16 +43,17 @@ export default function Button({
         <Icon
           size={size === ButtonSize.Small ? 18 : 24}
           color={Colors.onPrimary}
-          {...iconProps}
         />
       )}
 
-      <ThemedText
-        variant={ThemedTextVariant.Clickable}
-        style={{ color: Colors.onPrimary }}
-      >
-        {children}
-      </ThemedText>
+      {children && (
+        <ThemedText
+          variant={ThemedTextVariant.Clickable}
+          style={{ color: Colors.onPrimary }}
+        >
+          {children}
+        </ThemedText>
+      )}
     </View>
   );
 
@@ -80,12 +80,18 @@ const sizeStyles: Record<
   ButtonSize,
   {
     buttonWrapper: ViewStyle;
+    iconButtonWrapper: ViewStyle;
     buttonContents: ViewStyle;
   }
 > = {
   [ButtonSize.Small]: {
     buttonWrapper: {
       paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderRadius: 8,
+    },
+    iconButtonWrapper: {
+      paddingHorizontal: 8,
       paddingVertical: 8,
       borderRadius: 8,
     },
@@ -96,6 +102,11 @@ const sizeStyles: Record<
   [ButtonSize.Medium]: {
     buttonWrapper: {
       paddingHorizontal: 20,
+      paddingVertical: 12,
+      borderRadius: 32,
+    },
+    iconButtonWrapper: {
+      paddingHorizontal: 12,
       paddingVertical: 12,
       borderRadius: 32,
     },
