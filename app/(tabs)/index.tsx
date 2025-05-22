@@ -1,14 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 
-function Home() {
+export default function Home() {
   return (
     <View style={styles.container}>
-      <Text>Hello, world oOoo</Text>
+      <Text>Hello, world</Text>
     </View>
   );
 }
-
-export default Home;
 
 const styles = StyleSheet.create({
   container: {
