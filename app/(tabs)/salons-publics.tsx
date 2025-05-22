@@ -1,17 +1,29 @@
-import { StyleSheet, Text, View } from "react-native";
+import Button from "@/components/Button";
+import { ThemedText, ThemedTextVariants } from "@/components/ThemedText";
+import ThemedView from "@/components/ThemedView";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
 
 export default function OtherThing() {
+  const [count, setCount] = useState(0);
+
   return (
-    <View style={styles.container}>
-      <Text>Salons publics yippee</Text>
-    </View>
+    <ThemedView>
+      <ThemedText variant={ThemedTextVariants.HeadingLarge}>
+        Compteur à {count}
+      </ThemedText>
+
+      <View style={styles.flex}>
+        <Button onPress={() => setCount(count + 1)}>+1</Button>
+        <Button onPress={() => setCount(count - 1)}>-1</Button>
+      </View>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  flex: {
+    flexDirection: "row",
+    gap: 8,
   },
 });

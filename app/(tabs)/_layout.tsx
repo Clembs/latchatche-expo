@@ -1,11 +1,23 @@
+import { Colors } from "@/constants/Colors";
 import { Tabs } from "expo-router";
 import { Compass, Hash } from "phosphor-react-native";
+import { useColorScheme } from "react-native";
 
 export default function TabLayout() {
+  const colorScheme = useColorScheme() ?? "light";
+  const colors = Colors[colorScheme];
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "black",
+        tabBarStyle: {
+          backgroundColor: colors.surfaceVariant,
+        },
+        tabBarActiveTintColor: colors.onSurfaceVariant,
+        headerStyle: {
+          backgroundColor: colors.surfaceVariant,
+        },
+        headerTintColor: colors.onSurfaceVariant,
       }}
     >
       <Tabs.Screen
