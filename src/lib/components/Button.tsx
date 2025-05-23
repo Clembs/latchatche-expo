@@ -1,5 +1,5 @@
 import { Colors } from "$lib/constants/Colors";
-import { Link, LinkProps } from "expo-router";
+import { Href, Link, LinkProps } from "expo-router";
 import { IconProps } from "phosphor-react-native";
 import { ComponentType } from "react";
 import {
@@ -8,7 +8,6 @@ import {
   TextProps,
   TextStyle,
   useColorScheme,
-  View,
   ViewStyle,
 } from "react-native";
 import ThemedText, { ThemedTextVariant } from "./ThemedText";
@@ -27,7 +26,7 @@ export enum ButtonSize {
 export type ButtonProps = (LinkProps | TextProps) & {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  href?: string;
+  href?: Href;
   icon?: ComponentType<IconProps>;
 };
 
@@ -44,15 +43,21 @@ export default function Button({
   const styleVariant = variantStyles[variant](colorScheme);
 
   const buttonStyles = [
-    styles.buttonWrapper,
-    sizeStyles[size].buttonWrapper,
+    styles.button,
+    sizeStyles[size].button,
     styleVariant,
-    !children ? sizeStyles[size].iconButtonWrapper : undefined,
+    !children ? sizeStyles[size].iconButton : undefined,
     style,
   ];
 
   const ButtonContents = () => (
-    <View style={[styles.buttonContents, sizeStyles[size].buttonContents]}>
+    <Pressable
+      style={({ pressed }) => [
+        buttonStyles,
+        pressed && { backgroundColor: styleVariant.pressedBackgroundColor },
+      ]}
+      {...(restProps as TextProps)}
+    >
       {Icon && (
         <Icon
           size={size === ButtonSize.Small ? 18 : 24}
@@ -74,28 +79,23 @@ export default function Button({
           {children}
         </ThemedText>
       )}
-    </View>
+    </Pressable>
   );
 
   if (href) {
     return (
-      <Link style={buttonStyles} {...(restProps as LinkProps)} href={href}>
+      <Link
+        asChild
+        style={buttonStyles}
+        {...(restProps as LinkProps)}
+        href={href}
+      >
         <ButtonContents />
       </Link>
     );
   }
 
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        buttonStyles,
-        pressed && { backgroundColor: styleVariant.pressedBackgroundColor },
-      ]}
-      {...(restProps as TextProps)}
-    >
-      <ButtonContents />
-    </Pressable>
-  );
+  return <ButtonContents />;
 }
 
 const variantStyles: Record<
@@ -128,49 +128,44 @@ const variantStyles: Record<
 const sizeStyles: Record<
   ButtonSize,
   {
-    buttonWrapper: ViewStyle;
-    iconButtonWrapper: ViewStyle;
-    buttonContents: ViewStyle;
+    button: ViewStyle;
+    iconButton: ViewStyle;
   }
 > = {
   [ButtonSize.Small]: {
-    buttonWrapper: {
+    button: {
       paddingHorizontal: 16,
       paddingVertical: 8,
       borderRadius: 8,
+      gap: 8,
     },
-    iconButtonWrapper: {
+    iconButton: {
       paddingHorizontal: 8,
       paddingVertical: 8,
       borderRadius: 8,
-    },
-    buttonContents: {
       gap: 8,
     },
   },
   [ButtonSize.Medium]: {
-    buttonWrapper: {
+    button: {
       paddingHorizontal: 20,
       paddingVertical: 12,
       borderRadius: 32,
+      gap: 12,
     },
-    iconButtonWrapper: {
+    iconButton: {
       paddingHorizontal: 12,
       paddingVertical: 12,
       borderRadius: 32,
-    },
-    buttonContents: {
       gap: 12,
     },
   },
 };
 
 const styles = StyleSheet.create({
-  buttonWrapper: {
+  button: {
     backgroundColor: Colors.primary,
     color: Colors.onPrimary,
-  },
-  buttonContents: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
