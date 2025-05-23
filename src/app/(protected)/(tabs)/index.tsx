@@ -1,5 +1,5 @@
 import Button, { ButtonSize } from "$lib/components/Button";
-import { ThemedText, ThemedTextVariant } from "$lib/components/ThemedText";
+import ThemedText, { ThemedTextVariant } from "$lib/components/ThemedText";
 import ThemedView from "$lib/components/ThemedView";
 import { Stack } from "expo-router";
 import { Link } from "phosphor-react-native";

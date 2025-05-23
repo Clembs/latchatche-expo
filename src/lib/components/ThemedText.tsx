@@ -14,7 +14,7 @@ export type ThemedTextProps = TextProps & {
   variant?: ThemedTextVariant;
 };
 
-export function ThemedText({
+export default function ThemedText({
   variant = ThemedTextVariant.Paragraph,
   style,
   ...restProps

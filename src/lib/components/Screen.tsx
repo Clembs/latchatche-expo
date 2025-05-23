@@ -9,6 +9,7 @@ export default function Screen({ style, ...restProps }: ViewProps) {
     <ThemedView
       style={[
         {
+          flex: 1,
           paddingTop: safeAreaInsets.top + 16,
           paddingLeft: 16,
           paddingRight: 16,
