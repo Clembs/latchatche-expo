@@ -6,10 +6,18 @@ import {
   Pressable,
   StyleSheet,
   TextProps,
+  TextStyle,
+  useColorScheme,
   View,
   ViewStyle,
 } from "react-native";
-import { ThemedText, ThemedTextVariant } from "./ThemedText";
+import ThemedText, { ThemedTextVariant } from "./ThemedText";
+
+export enum ButtonVariant {
+  Primary,
+  Secondary,
+  Text,
+}
 
 export enum ButtonSize {
   Small,
@@ -17,6 +25,7 @@ export enum ButtonSize {
 }
 
 export type ButtonProps = (LinkProps | TextProps) & {
+  variant?: ButtonVariant;
   size?: ButtonSize;
   href?: string;
   icon?: ComponentType<IconProps>;
@@ -26,13 +35,18 @@ export default function Button({
   style,
   children,
   size = ButtonSize.Medium,
+  variant = ButtonVariant.Primary,
   href,
   icon: Icon,
   ...restProps
 }: ButtonProps) {
+  const colorScheme = useColorScheme() ?? "light";
+  const styleVariant = variantStyles[variant](colorScheme);
+
   const buttonStyles = [
     styles.buttonWrapper,
     sizeStyles[size].buttonWrapper,
+    styleVariant,
     !children ? sizeStyles[size].iconButtonWrapper : undefined,
     style,
   ];
@@ -42,14 +56,20 @@ export default function Button({
       {Icon && (
         <Icon
           size={size === ButtonSize.Small ? 18 : 24}
-          color={Colors.onPrimary}
+          color={styleVariant.color?.toString()}
         />
       )}
 
       {children && (
         <ThemedText
           variant={ThemedTextVariant.Clickable}
-          style={{ color: Colors.onPrimary }}
+          style={[
+            styleVariant,
+            {
+              // override the bg color since it's not supposed to have any
+              backgroundColor: "transparent",
+            },
+          ]}
         >
           {children}
         </ThemedText>
@@ -69,7 +89,7 @@ export default function Button({
     <Pressable
       style={({ pressed }) => [
         buttonStyles,
-        pressed && { backgroundColor: Colors.primaryVariant },
+        pressed && { backgroundColor: styleVariant.pressedBackgroundColor },
       ]}
       {...(restProps as TextProps)}
     >
@@ -77,6 +97,33 @@ export default function Button({
     </Pressable>
   );
 }
+
+const variantStyles: Record<
+  ButtonVariant,
+  (theme: "light" | "dark") => ViewStyle &
+    TextStyle & {
+      pressedBackgroundColor: string;
+    }
+> = {
+  [ButtonVariant.Primary]: (theme) => ({
+    backgroundColor: Colors.primary,
+    pressedBackgroundColor: Colors.primaryVariant,
+    color: Colors.onPrimary,
+  }),
+  [ButtonVariant.Secondary]: (theme) => ({
+    backgroundColor: Colors[theme].surfaceVariant,
+    pressedBackgroundColor: Colors[theme].surfaceVariant,
+    color: Colors[theme].onSurfaceVariant,
+  }),
+  [ButtonVariant.Text]: (theme) => ({
+    backgroundColor: "transparent",
+    pressedBackgroundColor: "#00000020",
+    color: Colors[theme].onSurfaceVariant,
+    textDecorationStyle: "solid",
+    textDecorationLine: "underline",
+    textDecorationColor: Colors[theme].onSurface,
+  }),
+};
 
 const sizeStyles: Record<
   ButtonSize,
