@@ -2,16 +2,26 @@ import Button, { ButtonSize, ButtonVariant } from "$lib/components/Button";
 import Screen from "$lib/components/Screen";
 import ThemedText, { ThemedTextVariant } from "$lib/components/ThemedText";
 import ThemedTextInput from "$lib/components/ThemedTextInput";
-import { AuthContext } from "$lib/helpers/auth/context";
+import { Colors } from "$lib/constants/Colors";
+import { AuthContext } from "$lib/context/auth";
 import { Stack } from "expo-router";
 import { useContext, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default function Login() {
   const authContext = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async () => {
+    const data = await authContext.login(username, password);
+
+    if (typeof data === "object" && "error" in data) {
+      setError(data.error);
+    }
+  };
 
   return (
     <>
@@ -42,16 +52,11 @@ export default function Login() {
           onChangeText={(value) => setPassword(value)}
         />
 
-        <Button
-          onPress={() =>
-            // TODO: submit login action
-            Alert.alert(
-              "Connection",
-              `Nom d'utilisateur : ${username}\nMot de passe : ${password}`
-            )
-          }
-          style={{ width: "100%" }}
-        >
+        {error && (
+          <ThemedText style={{ color: Colors.error }}>{error}</ThemedText>
+        )}
+
+        <Button onPress={handleSubmit} style={{ width: "100%" }}>
           Se connecter
         </Button>
 
