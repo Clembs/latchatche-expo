@@ -1,0 +1,84 @@
+import Button, { ButtonSize, ButtonVariant } from "$lib/components/Button";
+import Screen from "$lib/components/Screen";
+import ThemedText, { ThemedTextVariant } from "$lib/components/ThemedText";
+import ThemedTextInput from "$lib/components/ThemedTextInput";
+import { AuthContext } from "$lib/helpers/auth/context";
+import { Stack } from "expo-router";
+import { useContext, useState } from "react";
+import { Alert, StyleSheet, View } from "react-native";
+
+export default function Login() {
+  const authContext = useContext(AuthContext);
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  return (
+    <>
+      <Stack.Screen options={{ headerShown: false }} />
+
+      <Screen style={{ gap: 32 }}>
+        <View style={{ gap: 16 }}>
+          <ThemedText variant={ThemedTextVariant.HeadingLarge}>
+            Se connecter à La Tchatche
+          </ThemedText>
+
+          <ThemedText>Connectez-vous pour discuter avec vos amis.</ThemedText>
+        </View>
+
+        <ThemedTextInput
+          label="Nom d'utilisateur"
+          textContentType="username"
+          returnKeyType="next"
+          value={username}
+          onChangeText={(value) => setUsername(value)}
+        />
+        <ThemedTextInput
+          label="Mot de passe"
+          secureTextEntry={true}
+          textContentType="password"
+          returnKeyType="next"
+          value={password}
+          onChangeText={(value) => setPassword(value)}
+        />
+
+        <Button
+          onPress={() =>
+            // TODO: submit login action
+            Alert.alert(
+              "Connection",
+              `Nom d'utilisateur : ${username}\nMot de passe : ${password}`
+            )
+          }
+          style={{ width: "100%" }}
+        >
+          Se connecter
+        </Button>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "baseline",
+            alignSelf: "flex-end",
+          }}
+        >
+          <ThemedText>Pas de compte ?</ThemedText>
+
+          <Button
+            href="/register"
+            size={ButtonSize.Small}
+            variant={ButtonVariant.Text}
+          >
+            Inscrivez vous !
+          </Button>
+        </View>
+      </Screen>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 32,
+  },
+});
