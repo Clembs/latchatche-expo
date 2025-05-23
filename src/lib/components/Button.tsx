@@ -1,11 +1,11 @@
-import { Colors } from "@/constants/Colors";
+import { Colors } from "$lib/constants/Colors";
 import { Link, LinkProps } from "expo-router";
 import { IconProps } from "phosphor-react-native";
 import { ComponentType } from "react";
 import {
+  Pressable,
   StyleSheet,
   TextProps,
-  TouchableHighlight,
   View,
   ViewStyle,
 } from "react-native";
@@ -66,13 +66,15 @@ export default function Button({
   }
 
   return (
-    <TouchableHighlight
-      style={buttonStyles}
-      underlayColor={Colors.primaryVariant}
+    <Pressable
+      style={({ pressed }) => [
+        buttonStyles,
+        pressed && { backgroundColor: Colors.primaryVariant },
+      ]}
       {...(restProps as TextProps)}
     >
       <ButtonContents />
-    </TouchableHighlight>
+    </Pressable>
   );
 }
 

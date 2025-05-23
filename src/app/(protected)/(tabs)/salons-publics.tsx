@@ -1,6 +1,6 @@
-import Button from "@/components/Button";
-import { ThemedText, ThemedTextVariant } from "@/components/ThemedText";
-import ThemedView from "@/components/ThemedView";
+import Button from "$lib/components/Button";
+import { ThemedText, ThemedTextVariant } from "$lib/components/ThemedText";
+import ThemedView from "$lib/components/ThemedView";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 

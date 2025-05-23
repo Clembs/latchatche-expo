@@ -1,4 +1,4 @@
-import { Colors } from "@/constants/Colors";
+import { Colors } from "$lib/constants/Colors";
 import { Text, TextProps, TextStyle, useColorScheme } from "react-native";
 
 export enum ThemedTextVariant {

@@ -1,4 +1,4 @@
-import { Colors } from "@/constants/Colors";
+import { Colors } from "$lib/constants/Colors";
 import { Tabs } from "expo-router";
 import { Compass, Hash } from "phosphor-react-native";
 import { useColorScheme } from "react-native";
